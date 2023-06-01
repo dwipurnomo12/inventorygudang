@@ -71,3 +71,16 @@ Akses Aplikasi di Web browser
 
 
 
+## Screenshoot
+![Screenshot_924-min](https://github.com/dwipurnomo12/inventorygudang/assets/105181667/a1d872ba-c3fb-4fe8-8dcd-62032a56e240)
+
+![Screenshot_925](https://github.com/dwipurnomo12/inventorygudang/assets/105181667/222bd666-0f6c-4814-b6c8-4b608164647d)
+
+![Screenshot_926](https://github.com/dwipurnomo12/inventorygudang/assets/105181667/b7e9824b-c8b5-4078-8d7d-7b26ffaf5460)
+
+![Screenshot_927](https://github.com/dwipurnomo12/inventorygudang/assets/105181667/a0d2ad61-b4a2-470b-b7d4-40679328b1b2)
+
+![Screenshot_928](https://github.com/dwipurnomo12/inventorygudang/assets/105181667/d64360e9-8496-4f18-bee9-bf1f5223c792)
+
+
+
