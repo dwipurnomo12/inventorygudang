@@ -250,10 +250,14 @@
         let formData = new FormData();
         formData.append('name', name);
         formData.append('email', email);
-        formData.append('password', password);
         formData.append('role_id', role_id);
         formData.append('_token', token);
         formData.append('_method', 'PUT');
+
+        // Periksa apakah password diubah atau tidak
+        if (password !== '') {
+            formData.append('password', password);
+        }
 
         $.ajax({
             url: `/data-pengguna/${pengguna_id}`,
