@@ -121,7 +121,7 @@
                 return customer ? customer.customer: '';
             }
         }
-    })
+    });
 </script>
 
 <!-- Generate Kode Transaksi Otomatis -->
@@ -307,6 +307,38 @@
                                 timer: 3000
                             });
                             $(`#index_${barangKeluar_id}`).remove();
+                            
+                            $.ajax({
+                                url: "/barang-keluar/get-data",
+                                type: "GET",
+                                dataType: 'JSON',
+                                success: function(response){
+                                    let counter = 1;
+                                    $('#table_id').DataTable().clear();
+                                    $.each(response.data, function(key, value){
+                                        let customer = getCustomerName(response.customer, value.customer_id);
+                                        let barangKeluar = `
+                                        <tr class="barang-row" id="index_${value.id}">
+                                            <td>${counter++}</td>   
+                                            <td>${value.kode_transaksi}</td>
+                                            <td>${value.tanggal_keluar}</td>
+                                            <td>${value.nama_barang}</td>
+                                            <td>${value.jumlah_keluar}</td>
+                                            <td>${customer}</td>
+                                            <td>       
+                                                <a href="javascript:void(0)" id="button_hapus_barangKeluar" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
+                                            </td>
+                                        </tr>
+                                    `;
+                                    $('#table_id').DataTable().row.add($(barangKeluar)).draw(false);
+                                    });
+
+                                    function getCustomerName(customers, customerId) {
+                                        let customer = customers.find(s => s.id === customerId);
+                                        return customer ? customer.customer: '';
+                                    }
+                                }
+                            });
                         }
                     })
                 }

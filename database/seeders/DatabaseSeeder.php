@@ -37,14 +37,14 @@ class DatabaseSeeder extends Seeder
             'name'      => 'Kepala Gudang',
             'email'     => 'kepalagudang@gmail.com',
             'password'  => bcrypt('1234'),
-            'role_id'   => 3
+            'role_id'   => 2
         ]);
 
         User::create([
             'name'      => 'Admin Gudang',
             'email'     => 'admin@gmail.com',
             'password'  => bcrypt('1234'),
-            'role_id'   => 2
+            'role_id'   => 3
         ]);
 
         Jenis::create([
@@ -91,13 +91,16 @@ class DatabaseSeeder extends Seeder
             'role'      => 'superadmin',
             'deskripsi' => 'Superadmin memiliki kendali penuh pada aplikasi termasuk manajemen User'
         ]);
-        Role::create([
-            'role'      => 'admin gudang',
-            'deskripsi' => 'Admin gudang memilki akses untuk mengelola stok,  barang masuk, barang keluar dan laporannya'
-        ]);
+
         Role::create([
             'role'      => 'kepala gudang',
             'deskripsi' => 'Kepala gudang memilki akses untuk mengelola dan mencetak laporan stok, barang masuk, dan barang keluar'
         ]);
+
+        Role::create([
+            'role'      => 'admin gudang',
+            'deskripsi' => 'Admin gudang memilki akses untuk mengelola stok,  barang masuk, barang keluar dan laporannya'
+        ]);
+     
     }
 }

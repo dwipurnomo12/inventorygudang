@@ -67,7 +67,7 @@
             $('#table_id').DataTable().row.add($(customer)).draw(false);
             });
         }
-    })
+    });
 </script>
 
 <!-- Show Modal Tambah Jenis Barang -->
@@ -271,6 +271,30 @@
                                 timer: 3000
                             });
                             $(`#index_${customer_id}`).remove();
+
+                            $.ajax({
+                                url: "/customer/get-data",
+                                type: "GET",
+                                dataType: 'JSON',
+                                success: function(response){
+                                    let counter = 1;
+                                    $('#table_id').DataTable().clear();
+                                    $.each(response.data, function(key, value){
+                                        let customer = `
+                                        <tr class="barang-row" id="index_${value.id}">
+                                            <td>${counter++}</td>   
+                                            <td>${value.customer}</td>
+                                            <td>${value.alamat}</td>
+                                            <td>
+                                                <a href="javascript:void(0)" id="button_edit_customer" data-id="${value.id}" class="btn btn-icon btn-warning btn-lg mb-2"><i class="far fa-edit"></i> </a>
+                                                <a href="javascript:void(0)" id="button_hapus_customer" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
+                                            </td>
+                                        </tr>
+                                    `;
+                                    $('#table_id').DataTable().row.add($(customer)).draw(false);
+                                    });
+                                }
+                            });
                         }
                     })
                 }

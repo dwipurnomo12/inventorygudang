@@ -122,7 +122,7 @@
                 return supplier ? supplier.supplier: '';
             }
         }
-    })
+    });
 </script>
 
 <!-- Generate Kode Transaksi Otomatis -->
@@ -303,8 +303,40 @@
                                 timer: 3000
                             });
                             $(`#index_${barangMasuk_id}`).remove();
+
+                            $.ajax({
+                                url: "/barang-masuk/get-data",
+                                type: "GET",
+                                dataType: 'JSON',
+                                success: function(response){
+                                    let counter = 1;
+                                    $('#table_id').DataTable().clear();
+                                    $.each(response.data, function(key, value){
+                                        let supplier = getSupplierName(response.supplier, value.supplier_id);
+                                        let barangMasuk = `
+                                        <tr class="barang-row" id="index_${value.id}">
+                                            <td>${counter++}</td>   
+                                            <td>${value.kode_transaksi}</td>
+                                            <td>${value.tanggal_masuk}</td>
+                                            <td>${value.nama_barang}</td>
+                                            <td>${value.jumlah_masuk}</td>
+                                            <td>${supplier}</td>
+                                            <td>
+                                                <a href="javascript:void(0)" id="button_hapus_barangMasuk" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
+                                            </td>
+                                        </tr>
+                                    `;
+                                    $('#table_id').DataTable().row.add($(barangMasuk)).draw(false);
+                                    });
+
+                                    function getSupplierName(suppliers, supplierId) {
+                                        let supplier = suppliers.find(s => s.id === supplierId);
+                                        return supplier ? supplier.supplier: '';
+                                    }
+                                }
+                            });
                         }
-                    })
+                    });
                 }
             });
         });

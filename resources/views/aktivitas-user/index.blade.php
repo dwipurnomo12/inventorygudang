@@ -29,7 +29,11 @@
                             @foreach ($logs as $log)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $log->causer->name }}</td>
+                                <td>
+                                    @if ($log->causer !== null)
+                                        {{ $log->causer->name }}
+                                    @endif
+                                </td>
                                 <td>
                                     @if (isset($log->changes['old']))
                                         @foreach ($log->changes['old'] as $key => $itemChange)

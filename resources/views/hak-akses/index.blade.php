@@ -49,28 +49,28 @@
 <!-- Fetch Data/Get Data Barang -->
 <script>
     $.ajax({
-    url: "/hak-akses/get-data",
-    type: "GET",
-    dataType: 'JSON',
-    success: function(response) {
-        let counter = 1;
-        $('#table_id').DataTable().clear();
-        $.each(response.data, function(key, value) {
-            let role = `
-                <tr class="role-row" id="index_${value.id}">
-                    <td>${counter++}</td>
-                    <td>${value.role}</td>
-                    <td>${value.deskripsi}</td>
-                    <td>
-                        <a href="javascript:void(0)" id="button_edit_role" data-id="${value.id}" class="btn btn-icon btn-warning btn-lg mb-2"><i class="far fa-edit"></i> </a>
-                        <a href="javascript:void(0)" id="button_hapus_role" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
-                    </td>
-                </tr>
-                `;
-                $('#table_id').DataTable().row.add($(role)).draw(false);
-        });
-    }
-});
+        url: "/hak-akses/get-data",
+        type: "GET",
+        dataType: 'JSON',
+        success: function(response) {
+            let counter = 1;
+            $('#table_id').DataTable().clear();
+            $.each(response.data, function(key, value) {
+                let role = `
+                    <tr class="role-row" id="index_${value.id}">
+                        <td>${counter++}</td>
+                        <td>${value.role}</td>
+                        <td>${value.deskripsi}</td>
+                        <td>
+                            <a href="javascript:void(0)" id="button_edit_role" data-id="${value.id}" class="btn btn-icon btn-warning btn-lg mb-2"><i class="far fa-edit"></i> </a>
+                            <a href="javascript:void(0)" id="button_hapus_role" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
+                        </td>
+                    </tr>
+                    `;
+                    $('#table_id').DataTable().row.add($(role)).draw(false);
+            });
+        }
+    });
 </script>
 
 <!-- Show Modal Tambah barang -->
@@ -313,6 +313,30 @@
                             timer: 3000
                         });
                         $(`#index_${role_id}`).remove();
+
+                        $.ajax({
+                            url: "/hak-akses/get-data",
+                            type: "GET",
+                            dataType: 'JSON',
+                            success: function(response) {
+                                let counter = 1;
+                                $('#table_id').DataTable().clear();
+                                $.each(response.data, function(key, value) {
+                                    let role = `
+                                        <tr class="role-row" id="index_${value.id}">
+                                            <td>${counter++}</td>
+                                            <td>${value.role}</td>
+                                            <td>${value.deskripsi}</td>
+                                            <td>
+                                                <a href="javascript:void(0)" id="button_edit_role" data-id="${value.id}" class="btn btn-icon btn-warning btn-lg mb-2"><i class="far fa-edit"></i> </a>
+                                                <a href="javascript:void(0)" id="button_hapus_role" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
+                                            </td>
+                                        </tr>
+                                        `;
+                                        $('#table_id').DataTable().row.add($(role)).draw(false);
+                                });
+                            }
+                        });
                     }
                 })
             }

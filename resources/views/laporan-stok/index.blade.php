@@ -45,18 +45,14 @@
     </div>
 </div>
 
-<!-- Datatables Jquery -->
-<script>
-    $(document).ready(function(){
-        $('#table_id').DataTable({
-            paging: true
-        });
-    })
-</script>
 
 <!-- Dropdown -->
 <script>
     $(document).ready(function() {
+        var table = $('#table_id').DataTable({
+            paging: true
+        });
+
         loadData('semua');
 
         $('#opsi-laporan-stok').on('change', function(){
@@ -70,27 +66,22 @@
                 type: 'GET',
                 data: { opsi: selectedOption },
                 success: function(response){
-                    $('#tabel-laporan-stok').empty();
+                    table.clear().draw();
+
                     let counter = 1;
                     $.each(response, function(index, item) {
-                        getSatuanName(item.satuan_id, function(satuan) {
-                            var row = '<tr><td>' + counter++ +
-                                '</td><td>' + item.kode_barang +
-                                '</td><td>' + item.nama_barang +
-                                '</td><td>' + item.stok + ' ' + satuan + '</td></tr>';
-                            $('#tabel-laporan-stok').append(row);
-                        });
+                        var row = [
+                            counter++,
+                            item.kode_barang,
+                            item.nama_barang,
+                            item.stok
+                        ];
+                        table.row.add(row); // Menambahkan baris data ke DataTables
                     });
+                    table.draw();
                 }
             });
-            function getSatuanName(satuanId, callback){
-                $.getJSON('{{ url('api/satuan') }}', function(satuans){
-                    var satuan = satuans.find(function(s){
-                        return s.id === satuanId;
-                    });
-                    callback(satuan ? satuan.satuan : '');
-                });
-            }
+
         }
 
         $('#print-stok').on('click', function(){

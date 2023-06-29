@@ -381,8 +381,8 @@
 <!-- Hapus Data Barang -->
 <script>
     $('body').on('click', '#button_hapus_barang', function(){
-        let barang_id   = $(this).data('id');
-        let token       = $("meta[name='csrf-token']").attr("content");
+        let barang_id = $(this).data('id');
+        let token = $("meta[name='csrf-token']").attr("content");
 
         Swal.fire({
             title: 'Apakah Kamu Yakin?',
@@ -408,13 +408,44 @@
                             showConfirmButton: true,
                             timer: 3000
                         });
-                        $(`#index_${barang_id}`).remove();
+                        
+                        // Hapus data dari cache DataTables
+                        $('#table_id').DataTable().clear().draw();
+
+                        // Ambil ulang data dan gambar tabel
+                        $.ajax({
+                            url: "/barang/get-data",
+                            type: "GET",
+                            dataType: 'JSON',
+                            success: function(response) {
+                                let counter = 1;
+                                $.each(response.data, function(key, value) {
+                                    let stok = value.stok != null ? value.stok : "Stok Kosong";
+                                    let barang = `
+                                        <tr class="barang-row" id="index_${value.id}">
+                                            <td>${counter++}</td>
+                                            <td><img src="/storage/${value.gambar}" alt="gambar Barang" style="width: 150px"; height="150px"></td>
+                                            <td>${value.kode_barang}</td>
+                                            <td>${value.nama_barang}</td>
+                                            <td>${stok}</td>
+                                            <td>
+                                                <a href="javascript:void(0)" id="button_detail_barang" data-id="${value.id}" class="btn btn-icon btn-success btn-lg mb-2"><i class="far fa-eye"></i> </a>
+                                                <a href="javascript:void(0)" id="button_edit_barang" data-id="${value.id}" class="btn btn-icon btn-warning btn-lg mb-2"><i class="far fa-edit"></i> </a>
+                                                <a href="javascript:void(0)" id="button_hapus_barang" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
+                                            </td>
+                                        </tr>
+                                    `;
+                                    $('#table_id').DataTable().row.add($(barang)).draw(false);
+                                });
+                            }
+                        });
                     }
                 })
             }
         })
     })
 </script>
+
 
 <!-- Preview Image -->
 <script>

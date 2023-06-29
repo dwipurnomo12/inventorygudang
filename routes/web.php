@@ -46,17 +46,18 @@ Route::middleware('auth')->group(function () {
 
     Route::group(['middleware' => 'checkRole:superadmin,kepala gudang'], function(){
         Route::resource('/aktivitas-user', ActivityLogController::class);
+        
     });
 
     Route::group(['middleware' => 'checkRole:kepala gudang,superadmin,admin gudang'], function(){
         Route::resource('/dashboard', DashboardController::class);
         Route::get('/', [DashboardController::class, 'index']);
-
+        
         Route::get('/laporan-stok/get-data', [LaporanStokController::class, 'getData']);
         Route::get('/laporan-stok/print-stok', [LaporanStokController::class, 'printStok']);
         Route::get('/api/satuan/', [LaporanStokController::class, 'getSatuan']);
         Route::resource('/laporan-stok', LaporanStokController::class);
-    
+       
         Route::get('/laporan-barang-masuk/get-data', [LaporanBarangMasukController::class, 'getData']);
         Route::get('/laporan-barang-masuk/print-barang-masuk', [LaporanBarangMasukController::class, 'printBarangMasuk']);
         Route::get('/api/supplier/', [LaporanBarangMasukController::class, 'getSupplier']);

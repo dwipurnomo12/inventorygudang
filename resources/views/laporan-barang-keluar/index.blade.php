@@ -56,20 +56,11 @@
     </div>
 </div>
 
-<!-- Datatables Jquery -->
-<script>
-    $(document).ready(function(){
-        $('#table_id').DataTable({
-            paging: true
-        });
-    })
-</script>
-
-
-
 <!-- Script Get Data -->
 <script>
     $(document).ready(function() {
+        var table = $('#table_id').DataTable({ paging: true});
+
         loadData(); // Panggil fungsi loadData saat halaman dimuat
 
         $('#filter_form').submit(function(event) {
@@ -95,29 +86,26 @@
                     tanggal_selesai: tanggalSelesai
                 },
                 success: function(response) {
-                    $('#tabel-laporan-barang-keluar').empty();
+                    table.clear().draw();
 
                     if (response.length > 0) {
                         $.each(response, function(index, item) {
                             getCustomerName(item.customer_id, function(customer){
-                                var row = '<tr>' +
-                                    '<td>' + (index + 1) + '</td>' +
-                                    '<td>' + item.kode_transaksi + '</td>' +
-                                    '<td>' + item.tanggal_keluar + '</td>' +
-                                    '<td>' + item.nama_barang + '</td>' +
-                                    '<td>' + item.jumlah_keluar + '</td>' +
-                                    '<td>' + customer + '</td>' +
-                                    '</tr>';
-                                $('#tabel-laporan-barang-keluar').append(row);
+                                var row = [
+                                    (index + 1),
+                                    item.kode_transaksi,
+                                    item.tanggal_keluar,
+                                    item.nama_barang,
+                                    item.jumlah_keluar,
+                                    customer
+                                ];
+                               table.row.add(row).draw(false);
                             });
                         });
                     } else {
-                        var emptyRow = '<tr><td colspan="6">Tidak ada data yang tersedia.</td></tr>';
-                        $('#tabel-laporan-barang-keluar').append(emptyRow);
+                        var emptyRow = ['','Tidak ada data yang tersedia.', '', '', '', ''];
+                        table.row.add(emptyRow).draw(false); // Tambahkan baris kosong ke DataTable
                     }
-
-                    $('#table_id').DataTable(); // Inisialisasi DataTable setelah menambahkan data ke tabel
-                
                 },
                 error: function(xhr, status, error) {
                     console.log(error);

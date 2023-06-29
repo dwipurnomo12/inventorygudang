@@ -65,16 +65,6 @@ class LaporanStokController extends Controller
     }
 
     /**
-     * Get Satuan
-     */
-    public function getSatuan()
-    {
-        $satuans = Satuan::all();
-        
-        return response()->json($satuans);
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -120,5 +110,14 @@ class LaporanStokController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Get Satuan
+     */
+    public function getSatuan()
+    {
+        $satuans = Satuan::all();
+        return response()->json($satuans);
     }
 }

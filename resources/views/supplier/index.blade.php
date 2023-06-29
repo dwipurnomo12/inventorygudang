@@ -37,9 +37,7 @@
 <!-- Datatables Jquery -->
 <script>
     $(document).ready(function(){
-        $('#table_id').DataTable({
-            paging: true
-        });
+        $('#table_id').DataTable();
     })
 </script>
 
@@ -51,6 +49,10 @@
         dataType: 'JSON',
         success: function(response){
             let counter = 1;
+            if ($.fn.DataTable.isDataTable('#table_id')) {
+                $('#table_id').DataTable().destroy();
+            }
+
             $('#table_id').DataTable().clear();
             $.each(response.data, function(key, value){
                 let supplier = `
@@ -67,7 +69,7 @@
             $('#table_id').DataTable().row.add($(supplier)).draw(false);
             });
         }
-    })
+    });
 </script>
 
 <!-- Show Modal Tambah Jenis Barang -->
@@ -271,6 +273,34 @@
                                 timer: 3000
                             });
                             $(`#index_${supplier_id}`).remove();
+
+                            $.ajax({
+                                url: "/supplier/get-data",
+                                type: "GET",
+                                dataType: 'JSON',
+                                success: function(response){
+                                    let counter = 1;
+                                    if ($.fn.DataTable.isDataTable('#table_id')) {
+                                        $('#table_id').DataTable().destroy();
+                                    }
+
+                                    $('#table_id').DataTable().clear();
+                                    $.each(response.data, function(key, value){
+                                        let supplier = `
+                                        <tr class="barang-row" id="index_${value.id}">
+                                            <td>${counter++}</td>   
+                                            <td>${value.supplier}</td>
+                                            <td>${value.alamat}</td>
+                                            <td>
+                                                <a href="javascript:void(0)" id="button_edit_supplier" data-id="${value.id}" class="btn btn-icon btn-warning btn-lg mb-2"><i class="far fa-edit"></i> </a>
+                                                <a href="javascript:void(0)" id="button_hapus_supplier" data-id="${value.id}" class="btn btn-icon btn-danger btn-lg mb-2"><i class="fas fa-trash"></i> </a>
+                                            </td>
+                                        </tr>
+                                    `;
+                                    $('#table_id').DataTable().row.add($(supplier)).draw(false);
+                                    });
+                                }
+                            });
                         }
                     })
                 }
