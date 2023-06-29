@@ -109,12 +109,10 @@ class ManajemenUserController extends Controller
         $validator = Validator::make($request->all(), [
             'name'      => 'required',
             'email'     => 'required',
-            'password'  => 'min:4',
             'role_id'   => 'required'
         ], [
             'name.required'     => 'Form Nama Wajib Di isi !',
             'email.required'    => 'Form Email Wajib Di isi !',
-            'password.min'      => 'Password Minimal 4 Huruf/Angka/Karakter',
             'role_id.required'  => 'Tentukan Role/Hak Akses !',
         ]);
 
@@ -122,12 +120,28 @@ class ManajemenUserController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $pengguna->update([
+        $userData = [
             'name'      => $request->name,
             'email'     => $request->email,
-            'password'  => Hash::make($request->password),
             'role_id'   => $request->role_id
-        ]);
+        ];
+
+        // Cek apakah password diubah atau tidak
+        if (!empty($request->password)) {
+            $validatorPassword = Validator::make($request->all(), [
+                'password'  => 'min:4'
+            ], [
+                'password.min'  => 'Password minimal 4 Huruf/Angka/Karakter !'
+            ]);
+
+            if ($validatorPassword->fails()) {
+                return response()->json($validatorPassword->errors(), 422);
+            }
+
+            $userData['password'] = Hash::make($request->password);
+        }
+
+        $pengguna->update($userData);
 
         return response()->json([
             'success'   => true,
