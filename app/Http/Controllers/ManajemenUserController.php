@@ -24,8 +24,8 @@ class ManajemenUserController extends Controller
 
     public function getDataPengguna()
     {
-        $penggunas = User::all();
-        
+        $penggunas = User::with('role')->get();
+
         return response()->json([
             'success'   => true,
             'data'      => $penggunas
@@ -60,7 +60,7 @@ class ManajemenUserController extends Controller
             'role_id.required'  => 'Tentukan Role/Hak Akses !',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
@@ -116,7 +116,7 @@ class ManajemenUserController extends Controller
             'role_id.required'  => 'Tentukan Role/Hak Akses !',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
 
@@ -167,8 +167,8 @@ class ManajemenUserController extends Controller
      */
     public function getRole()
     {
-       $roles = Role::all();
-       
-       return response()->json($roles);
+        $roles = Role::all();
+
+        return response()->json($roles);
     }
 }
